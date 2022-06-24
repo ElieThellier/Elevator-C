@@ -101,9 +101,9 @@ PersonList **waitingLists = malloc(nbFloor*sizeof(PersonList*));
     }
 
     // Update state machine of elevator !!!!
-    /*
+    
     stepElevator(building);
-    */
+    
     wclear(win);   // clear display area
     box(win, 0,0); // display border of window
 

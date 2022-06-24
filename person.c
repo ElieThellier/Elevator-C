@@ -15,3 +15,12 @@ PersonList* insert(Person *p, PersonList *list){
     L -> next = list;
     return L;
 }
+
+int taille(PersonList *L){
+    int n=0;
+    while (L->next!=NULL){
+        n++;
+        L++;
+    }
+    return n;
+}
