@@ -7,8 +7,10 @@ elevator.o: elevator.c person.h elevator.h
 person.o: person.c person.h
 	gcc -c person.c
 main: person.o elevator.o main.o person.h elevator.h
-	gcc -o main main.o elevator.o person.o -lncurses 
+	gcc -g -o main main.o elevator.o person.o -lncurses 
 run:
 	./main
+debug: main
+	gdb main
 clean:
 	rm -f main *.o
