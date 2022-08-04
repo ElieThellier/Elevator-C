@@ -2,13 +2,13 @@
 #define PERSON_H
 
 typedef struct _Person {
-    int src;
-    int dest;
+    int src;  // étage source de la personne
+    int dest; // étage destination de la personne
 } Person;
 
 typedef struct _PersonList {
     Person *person;
-    struct _PersonList *next;
+    struct _PersonList *next; // liste chainée
 } PersonList;
 
 Person* createPerson(int src, int dest);
