@@ -5,10 +5,13 @@
 
 void stepElevator(Building *b){
     if(b->elevator->currentFloor==b->elevator->targetFloor){
+        
         if(b->waitingLists[b->elevator->currentFloor]!=NULL){
-        b->waitingLists[b->elevator->currentFloor]=enterElevator(b->elevator,b->waitingLists[b->elevator->currentFloor]);
+            b->waitingLists[b->elevator->currentFloor]=enterElevator(b->elevator,b->waitingLists[b->elevator->currentFloor]);
         }
-        exitElevator(b->elevator); // je sais pas pk on devrait garder la liste des personnes qui sortent de l'ascenseur
+        if(b->elevator->persons!=NULL){
+            exitElevator(b->elevator); // je sais pas pk on devrait garder la liste des personnes qui sortent de l'ascenseur
+        }
     }
         
     else{
@@ -43,10 +46,29 @@ Building *create_building(int nbFloor, Elevator *elevator, PersonList **waitingL
 PersonList* exitElevator(Elevator *e){
     PersonList* personsout = malloc(sizeof(PersonList*));
     // on regarde chaque personne dans l'ascenseur
-    
-    if(e->persons->person->dest==e->currentFloor){
-        personsout=insert(e->persons->person,personsout);
-        e->persons=suppr(e->persons);
+    if(e->persons!=NULL){
+        if(e->persons->person->dest==e->currentFloor){
+            personsout=insert(e->persons->person,personsout);
+            e->persons=suppr(e->persons);
+        }
+    }
+    if(e->persons!=NULL){
+        if(e->persons->next!=NULL){
+            if(e->persons->next->person->dest==e->currentFloor){
+                personsout=insert(e->persons->next->person,personsout);
+                e->persons->next=suppr(e->persons->next);
+                }
+        }
+    }
+    if(e->persons!=NULL){
+        if(e->persons->next!=NULL){
+            if(e->persons->next->next!=NULL){
+                if(e->persons->next->next->person->dest==e->currentFloor){
+                    personsout=insert(e->persons->next->next->person,personsout);
+                    e->persons->next->next=suppr(e->persons->next->next);
+                }
+            }
+        }
     }
     // on renvoie la liste de ceux qui sortent de l'ascenseur (on a modifié celle de ceux qui restent dedans)
     return personsout;
@@ -64,4 +86,5 @@ PersonList* enterElevator(Elevator *e, PersonList *waitingList){
         waitingList=waitingList->next;
     }
     return waitingList;
+
 }
