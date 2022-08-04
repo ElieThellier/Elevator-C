@@ -1,8 +1,9 @@
 #include"person.h"
 #include<stdlib.h>
+#include<stdio.h>
 
 Person* createPerson(int src, int dest){
-    Person* p=malloc(sizeof(Person));
+    Person* p=malloc(sizeof(Person*));
     p -> src = src;
     p -> dest = dest;
     return p;
@@ -10,17 +11,25 @@ Person* createPerson(int src, int dest){
 
 PersonList* insert(Person *p, PersonList *list){
     // liste chainée avec liste vide char *p=NULL; au depart
-    PersonList* L=malloc(sizeof(PersonList));
+    PersonList* L=malloc(sizeof(PersonList*));
     L -> person=p;
     L -> next = list;
     return L;
 }
 
+PersonList* suppr(PersonList *list){
+    // liste chainée avec liste vide char *p=NULL; au depart
+    PersonList* L=malloc(sizeof(PersonList*));
+    L -> person=list->next->person;
+    L -> next = list->next->next;
+    return L;
+}
+
 int taille(PersonList *L){
-    int n=0;
-    while (L->next!=NULL){
-        n++;
-        L++;
+    if (L==NULL){
+        return 0;
     }
-    return n;
+    else{
+        return taille(L->next)+1;
+    }
 }
