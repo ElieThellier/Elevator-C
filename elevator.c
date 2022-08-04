@@ -5,8 +5,9 @@
 
 void stepElevator(Building *b){
     if(b->elevator->currentFloor==b->elevator->targetFloor){
-        
+        if(b->waitingLists[b->elevator->currentFloor]!=NULL){
         b->waitingLists[b->elevator->currentFloor]=enterElevator(b->elevator,b->waitingLists[b->elevator->currentFloor]);
+        }
         exitElevator(b->elevator); // je sais pas pk on devrait garder la liste des personnes qui sortent de l'ascenseur
     }
         
@@ -42,22 +43,11 @@ Building *create_building(int nbFloor, Elevator *elevator, PersonList **waitingL
 PersonList* exitElevator(Elevator *e){
     PersonList* personsout = malloc(sizeof(PersonList*));
     // on regarde chaque personne dans l'ascenseur
-    while(e->persons->next!=NULL){
-        // si une personne doit sortir
-        if(e->persons->person->dest==e->currentFloor){
-            // on l'ajoute dans la liste des personnes qui sortent
-            personsout=insert(e->persons->person,personsout);
-            // et on l'enleve de l'ascenseur
-            e->persons=suppr(e->persons);
-            
-        }
-        // sinon, on regarde la personne suivante
-        else{
-            // cette ligne la qui fait bugger /!\
-            e->persons++;
-        }
-    }
     
+    if(e->persons->person->dest==e->currentFloor){
+        personsout=insert(e->persons->person,personsout);
+        e->persons=suppr(e->persons);
+    }
     // on renvoie la liste de ceux qui sortent de l'ascenseur (on a modifié celle de ceux qui restent dedans)
     return personsout;
 }
@@ -68,7 +58,10 @@ PersonList* enterElevator(Elevator *e, PersonList *waitingList){
         e->persons=insert(waitingList->person,e->persons);
         // on enleve les persons de la liste d'attente
         waitingList=waitingList->next;
-        //? waitingList++;
+    }
+    if(waitingList->next==NULL & taille(e->persons)<e->capacity){
+        e->persons=insert(waitingList->person,e->persons);
+        waitingList=waitingList->next;
     }
     return waitingList;
 }

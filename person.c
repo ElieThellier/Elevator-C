@@ -20,7 +20,7 @@ PersonList* insert(Person *p, PersonList *list){
 PersonList* suppr(PersonList *list){
     // liste chainée avec liste vide *p=NULL; au depart
     PersonList* K=malloc(sizeof(PersonList*));
-    if(list->next!=NULL | list->next->next!=NULL){
+    if(list->next!=NULL & list->next->next!=NULL){
         K -> person=list->next->person;
         K -> next = list->next->next;
         return K;
