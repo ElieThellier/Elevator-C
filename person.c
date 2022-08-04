@@ -10,7 +10,7 @@ Person* createPerson(int src, int dest){
 }
 
 PersonList* insert(Person *p, PersonList *list){
-    // liste chainée avec liste vide char *p=NULL; au depart
+    // liste chainée avec liste vide *p=NULL; au depart
     PersonList* L=malloc(sizeof(PersonList*));
     L -> person=p;
     L -> next = list;
@@ -18,11 +18,16 @@ PersonList* insert(Person *p, PersonList *list){
 }
 
 PersonList* suppr(PersonList *list){
-    // liste chainée avec liste vide char *p=NULL; au depart
-    PersonList* L=malloc(sizeof(PersonList*));
-    L -> person=list->next->person;
-    L -> next = list->next->next;
-    return L;
+    // liste chainée avec liste vide *p=NULL; au depart
+    PersonList* K=malloc(sizeof(PersonList*));
+    if(list->next!=NULL | list->next->next!=NULL){
+        K -> person=list->next->person;
+        K -> next = list->next->next;
+        return K;
+    }
+    else{
+        return list;
+    }
 }
 
 int taille(PersonList *L){

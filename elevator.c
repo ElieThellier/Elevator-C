@@ -4,10 +4,10 @@
 #include <stdio.h>
 
 void stepElevator(Building *b){
-    
     if(b->elevator->currentFloor==b->elevator->targetFloor){
-        PersonList* test=exitElevator(b->elevator); // je sais pas pk on devrait garder la liste des personnes qui sortent de l'ascenseur
+        
         b->waitingLists[b->elevator->currentFloor]=enterElevator(b->elevator,b->waitingLists[b->elevator->currentFloor]);
+        exitElevator(b->elevator); // je sais pas pk on devrait garder la liste des personnes qui sortent de l'ascenseur
     }
         
     else{
@@ -42,20 +42,20 @@ Building *create_building(int nbFloor, Elevator *elevator, PersonList **waitingL
 PersonList* exitElevator(Elevator *e){
     PersonList* personsout = malloc(sizeof(PersonList*));
     // on regarde chaque personne dans l'ascenseur
-    PersonList* temp=malloc(sizeof(PersonList*));
-    while(temp->next!=NULL){
+    while(e->persons->next!=NULL){
         // si une personne doit sortir
-        if(temp->person->dest==e->currentFloor){
+        if(e->persons->person->dest==e->currentFloor){
             // on l'ajoute dans la liste des personnes qui sortent
-            personsout=insert(temp->person,personsout);
+            personsout=insert(e->persons->person,personsout);
             // et on l'enleve de l'ascenseur
-            temp=suppr(temp);
+            e->persons=suppr(e->persons);
+            
         }
         // sinon, on regarde la personne suivante
         else{
-            temp++;
+            // cette ligne la qui fait bugger /!\
+            e->persons++;
         }
-        e->persons=temp;
     }
     
     // on renvoie la liste de ceux qui sortent de l'ascenseur (on a modifié celle de ceux qui restent dedans)
