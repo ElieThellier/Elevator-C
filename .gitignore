@@ -1,4 +1,8 @@
+# ignore all .log
 *.log
+# ignore .vscode
 .vscode
+# ignore all .o
 *.o
+# ignore main
 main
