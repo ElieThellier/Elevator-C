@@ -96,14 +96,14 @@ PersonList **waitingLists = malloc(nbFloor*sizeof(PersonList*));
     } else {
       int level = input - '0';
       if(0 <= level && level < nbFloor) {
-	building->elevator->targetFloor = level;
+	      building->elevator->targetFloor = level;
       }
     }
 
     // Update state machine of elevator !!!!
-
+    
     stepElevator(building);
-
+    
     wclear(win);   // clear display area
     box(win, 0,0); // display border of window
 
